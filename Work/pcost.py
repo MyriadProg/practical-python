@@ -2,12 +2,19 @@
 #
 # Exercise 1.27
 
-total_cost = 0
+def portfolio_cost(filename):
+    "Returns portfolio cost of filename in csv format"
 
-with open('Data/portfolio.csv', 'rt') as f:
-    headers = next(f)
-    for line in f:
-        stock = line.strip().split(',')
-        total_cost += int(stock[1]) * float(stock[2])
+    with open(filename, 'rt') as f:
+        total_cost = 0
+        headers = next(f) # parse the header line to skip it
+        for line in f:
+            stock = line.strip().split(',') # parse each line in the file into a list
+            shares = int(stock[1])
+            price = float(stock[2])
+            total_cost += shares * price
 
-print(f'Total cost {total_cost}')
+    return total_cost
+
+cost = portfolio_cost(filename='Data/portfolio.csv')
+print(f'Total cost {cost}')
