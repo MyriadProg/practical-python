@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 1.27
+# Exercise 1.31
 
 def portfolio_cost(filename):
     "Returns portfolio cost of filename in csv format"
@@ -9,10 +9,13 @@ def portfolio_cost(filename):
         total_cost = 0
         headers = next(f) # parse the header line to skip it
         for line in f:
-            stock = line.strip().split(',') # parse each line in the file into a list
-            shares = int(stock[1])
-            price = float(stock[2])
-            total_cost += shares * price
+            try:
+                stock = line.strip().split(',') # parse each line in the file into a list
+                shares = int(stock[1])
+                price = float(stock[2])
+                total_cost += shares * price
+            except ValueError:
+                print("Unable to process this line")
 
     return total_cost
 
