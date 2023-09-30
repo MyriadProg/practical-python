@@ -34,4 +34,17 @@ def read_prices(filename):
     
     return stock_prices
 
-
+def calculate_gains(portfolio, prices):
+    '''Calculates gains/losses of a portfolio of shares based on current prices
+        params:
+        portfolio - list of dictionares with name, price, and shares as keys
+        prices - a dictionary of stock names (keys) with their current prices (values)
+    '''
+    gains = 0.0
+    for holding in portfolio:
+        current_price = prices[holding['name']]
+        initial_price = holding['price']
+        nshares = holding['shares']
+        gains += (current_price - initial_price) * nshares
+    
+    return gains
