@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.4
+# Exercise 2.9
 import csv
 
 def read_portfolio(filename):
@@ -48,3 +48,20 @@ def calculate_gains(portfolio, prices):
         gains += (current_price - initial_price) * nshares
     
     return gains
+
+def make_report(portfolio, prices):
+    ''' Computes a report of stock portfolio and returns a list of tuples
+        params:
+        portfolio - list of stocks as dictionaries
+        prices - a dictionary of prices
+    '''
+    report = []
+    for holding in portfolio:
+        initial_price = holding['price']
+        current_price = prices[holding['name']]
+        change = current_price - initial_price
+        nshares = holding['shares']
+        listing = holding['name']
+        report.append((listing, nshares, current_price, change))
+    
+    return report
