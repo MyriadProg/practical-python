@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.10
+# Exercise 2.11
 import csv
 
 def read_portfolio(filename):
@@ -69,5 +69,11 @@ def make_report(portfolio, prices):
 def formatted_table(report):
     ''' Prints a nicely formatted output of the report (list of tuples)
     '''
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    separator = '-'*10
+
+    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
+    print(f'{separator:>10s} {separator:>10s} {separator:>10s} {separator:>10s}')
+    
     for name, shares, price, change in report:
         print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
