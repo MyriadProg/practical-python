@@ -71,9 +71,10 @@ def formatted_table(report):
     '''
     headers = ('Name', 'Shares', 'Price', 'Change')
     separator = '-'*10
+    currency = '$'
 
     print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
     print(f'{separator:>10s} {separator:>10s} {separator:>10s} {separator:>10s}')
-    
+
     for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+        print(f'{name:>10s} {shares:>10d} {currency}{price:>9.2f} {change:>10.2f}')
