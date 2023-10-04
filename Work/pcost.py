@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 1.33
+# Exercise 2.15
 
 # import csv module that best works with csv files
 import csv 
@@ -13,13 +13,13 @@ def portfolio_cost(filename):
         total_cost = 0
         rows = csv.reader(f) # parses each line in the file into a list
         headers = next(rows) # parse the header line to skip it
-        for line in rows:
+        for rowno, row in enumerate(rows, start=1):
             try:
-                shares = int(line[1])
-                price = float(line[2])
+                shares = int(row[1])
+                price = float(row[2])
                 total_cost += shares * price
             except ValueError:
-                print("Unable to process this line")
+                print(f"Row {rowno}: Couldn't convert: {row}")
 
     return total_cost
 
