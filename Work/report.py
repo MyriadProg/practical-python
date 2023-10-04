@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.11
+# Exercise 2.16
 import csv
 
 def read_portfolio(filename):
@@ -11,12 +11,16 @@ def read_portfolio(filename):
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for line in rows:
-            # Parse each line into a dictionary using headers as keys.
-            holding = {headers[0]: line[0], 
-                       headers[1]: int(line[1]), 
-                       headers[2]: float(line[2])}
-            portfolio.append(holding)
+        for rowno, row in enumerate(rows, start = 1):
+            record = dict(zip(headers, row))
+            try:
+                record['shares'] = int(record['shares'])
+                record['price'] = float(record['price'])
+            #This catches errors in int() and float() conversions above
+            except ValueError:
+                print(f"Row {rowno}: Couldn't convert: {row}")
+
+            portfolio.append(record)
     
     return portfolio
 
