@@ -83,8 +83,11 @@ def print_report(report):
         currency = lambda price: f"${price:0.2f}" # lambda function to add the $ currency symbol to the price
         print(f'{name:>10s} {shares:>10d} {currency(price):>10s} {change:>10.2f}')
 
-
-portfolio = read_portfolio('Data/portfolio.csv')
-prices = read_prices('Data/prices.csv')
-report = make_report(portfolio, prices)
-print_report(report)
+def portfolio_report(portfolio_filename, prices_filename):
+    ''' 
+    Prints a portfolio report from the csv files portfolio_filename and prices_filename
+    '''
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(prices_filename)
+    report = make_report(portfolio, prices)
+    print_report(report)
