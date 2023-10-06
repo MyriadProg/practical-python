@@ -75,10 +75,11 @@ def formatted_table(report):
     '''
     headers = ('Name', 'Shares', 'Price', 'Change')
     separator = '-'*10
-    currency = '$'
 
     print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
     print(f'{separator:>10s} {separator:>10s} {separator:>10s} {separator:>10s}')
 
     for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d} {currency}{price:>9.2f} {change:>10.2f}')
+        currency = lambda price: f"${price:0.2f}" # lambda function to add the $ currency symbol to the price
+        print(f'{name:>10s} {shares:>10d} {currency(price):>10s} {change:>10.2f}')
+
