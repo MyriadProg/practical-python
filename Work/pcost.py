@@ -23,7 +23,7 @@ def portfolio_cost(filename, has_headers=True, types=[str, int, float], delimite
 def main(argv):
     portfolio_file = argv[1]
     cost = portfolio_cost(portfolio_file)
-    print(cost)
+    print(f'Total cost: {cost}')
 
 if __name__ == '__main__':
 
