@@ -1,7 +1,8 @@
 # report.py
 #
 # Exercise 3.12
-import csv
+
+# imports
 import fileparse
 
 def read_portfolio(filename, types=[str, int, float], delimiter=',', select=None, has_headers=True):
@@ -78,3 +79,20 @@ def portfolio_report(portfolio_filename, prices_filename):
     prices = read_prices(prices_filename)
     report = make_report(portfolio, prices)
     print_report(report)
+
+def main(argv):
+    '''
+    Parse command line arguments
+    '''
+    portfolio_file = argv[1]
+    price_file = argv[2]
+    portfolio_report(portfolio_file, price_file)
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) != 3:
+        raise SystemExit(f'Usage: {sys.argv[0]} ' 'portfile pricefile')
+    try:
+        main(sys.argv)
+    except FileNotFoundError as e:
+        raise SystemExit(e)

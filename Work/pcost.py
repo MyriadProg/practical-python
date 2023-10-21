@@ -2,8 +2,7 @@
 #
 # Exercise 2.16
 
-# import csv module that best works with csv files
-import csv 
+# imports
 import sys
 from report import read_portfolio
 
@@ -21,13 +20,16 @@ def portfolio_cost(filename, has_headers=True, types=[str, int, float], delimite
 
     return total_cost
 
+def main(argv):
+    portfolio_file = argv[1]
+    cost = portfolio_cost(portfolio_file)
+    print(cost)
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 2:
-        filename = sys.argv[1]
-    else:
-        filename = 'Data/portfolio.csv'
-
-    cost = portfolio_cost(filename)
-    print(f'Total cost {cost}')
+    if len(sys.argv) != 2:
+        raise SystemExit(f'Usage {sys.argv[0]} portfile')
+    try:
+        main(sys.argv)
+    except FileNotFoundError as e:
+        raise SystemExit(e)
