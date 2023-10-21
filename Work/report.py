@@ -1,41 +1,28 @@
 # report.py
 #
-# Exercise 2.16
+# Exercise 3.12
 import csv
+import fileparse
 
-def read_portfolio(filename):
+def read_portfolio(filename, types=[str, int, float]):
     "Reads a csv file and returns a list of dictionaries using headers as keys"
 
-    portfolio = []
+    # Uses the parse_csv func from fileparse.py to parse the file
+    portfolio = fileparse.parse_csv(filename, types=types)
 
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for rowno, row in enumerate(rows, start = 1):
-            record = dict(zip(headers, row))
-            try:
-                record['shares'] = int(record['shares'])
-                record['price'] = float(record['price'])
-            #This catches errors in int() and float() conversions above
-            except ValueError:
-                print(f"Row {rowno}: Couldn't convert: {row}")
-
-            portfolio.append(record)
-    
     return portfolio
 
-def read_prices(filename):
+def read_prices(filename, has_headers=False, types=[str, float]):
     "Read a csv file and return a dictionary of stock names (keys) and prices (values)"
     stock_prices = {}
 
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        for line in rows:
-            if len(line) == 2: #Checks if the row has values
-                stock_name = line[0]
-                price = float(line[1])
-                stock_prices[stock_name] = price
-    
+    # Uses the parse_csv func from fileparse.py to parse the file (returns a list of tuples)
+    prices = fileparse.parse_csv(filename, has_headers=has_headers, types=types)
+
+    # Populate the dictionary
+    for price in prices:
+        stock_prices[price[0]] = price[1]
+
     return stock_prices
 
 def calculate_gains(portfolio, prices):
