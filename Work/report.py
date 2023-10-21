@@ -4,20 +4,20 @@
 import csv
 import fileparse
 
-def read_portfolio(filename, types=[str, int, float]):
+def read_portfolio(filename, types=[str, int, float], delimiter=',', select=None, has_headers=True):
     "Reads a csv file and returns a list of dictionaries using headers as keys"
 
     # Uses the parse_csv func from fileparse.py to parse the file
-    portfolio = fileparse.parse_csv(filename, types=types)
+    portfolio = fileparse.parse_csv(filename, types=types, delimiter=delimiter, select=select, has_headers=has_headers)
 
     return portfolio
 
-def read_prices(filename, has_headers=False, types=[str, float]):
+def read_prices(filename, has_headers=False, types=[str, float], delimiter=','):
     "Read a csv file and return a dictionary of stock names (keys) and prices (values)"
     stock_prices = {}
 
     # Uses the parse_csv func from fileparse.py to parse the file (returns a list of tuples)
-    prices = fileparse.parse_csv(filename, has_headers=has_headers, types=types)
+    prices = fileparse.parse_csv(filename, has_headers=has_headers, types=types, delimiter=delimiter)
 
     # Populate the dictionary
     for price in prices:
