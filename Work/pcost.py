@@ -3,32 +3,27 @@
 # Exercise 2.16
 
 # imports
-import sys
+
 from report import read_portfolio
 
-def portfolio_cost(filename, has_headers=True, types=[str, int, float], delimiter=',', select=None):
-    "Returns portfolio cost of filename in csv format"
-
-    total_cost = 0.0
-
+def portfolio_cost(filename):
+    '''
+    Computes the total cost (shares*price) of a portfolio file
+    '''
     # Use read_portfolio func to get a list of portfolios as dictionaries
-    portfolio = read_portfolio(filename, has_headers=has_headers, types=types, delimiter=delimiter, select=select)
+    portfolio = read_portfolio(filename)
 
     # Compute total cost
-    for item in portfolio:
-        total_cost += item['shares'] * item['price']
+    return sum([s['shares'] * s['price'] for s in portfolio])
 
-    return total_cost
-
-def main(argv):
-    portfolio_file = argv[1]
-    cost = portfolio_cost(portfolio_file)
-    print(f'Total cost: {cost}')
+def main(args):
+    if len(args) != 2:
+        raise SystemExit('Usage: %s portfoliofile' % args[0])
+    filename = args[1]
+    print('Total cost:', portfolio_cost(filename))
 
 if __name__ == '__main__':
-
-    if len(sys.argv) != 2:
-        raise SystemExit(f'Usage {sys.argv[0]} portfile')
+    import sys
     try:
         main(sys.argv)
     except FileNotFoundError as e:

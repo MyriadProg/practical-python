@@ -5,58 +5,35 @@
 # imports
 import fileparse
 
-def read_portfolio(filename, types=[str, int, float], delimiter=',', select=None, has_headers=True):
-    "Reads a csv file and returns a list of dictionaries using headers as keys"
-
-    # Uses the parse_csv func from fileparse.py to parse the file
-    portfolio = fileparse.parse_csv(filename, types=types, delimiter=delimiter, select=select, has_headers=has_headers)
-
-    return portfolio
-
-def read_prices(filename, has_headers=False, types=[str, float], delimiter=','):
-    "Read a csv file and return a dictionary of stock names (keys) and prices (values)"
-    stock_prices = {}
-
-    # Uses the parse_csv func from fileparse.py to parse the file (returns a list of tuples)
-    prices = fileparse.parse_csv(filename, has_headers=has_headers, types=types, delimiter=delimiter)
-
-    # Populate the dictionary
-    for price in prices:
-        stock_prices[price[0]] = price[1]
-
-    return stock_prices
-
-def calculate_gains(portfolio, prices):
-    '''Calculates gains/losses of a portfolio of shares based on current prices
-        params:
-        portfolio - list of dictionares with name, price, and shares as keys
-        prices - a dictionary of stock names (keys) with their current prices (values)
+def read_portfolio(filename):
     '''
-    gains = 0.0
-    for holding in portfolio:
-        current_price = prices[holding['name']]
-        initial_price = holding['price']
-        nshares = holding['shares']
-        gains += (current_price - initial_price) * nshares
+    Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price.
+    '''
+    with open(filename) as lines:
+        return fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
     
-    return gains
+
+def read_prices(filename):
+    '''
+    Read a CSV file of price data into a dict mapping names to prices.
+    '''
+    with open(filename) as lines:
+        return dict(fileparse.parse_csv(lines, types=[str,float], has_headers=False))
+
 
 def make_report(portfolio, prices):
-    ''' Computes a report of stock portfolio and returns a list of tuples
-        params:
-        portfolio - list of stocks as dictionaries
-        prices - a dictionary of prices
     '''
-    report = []
-    for holding in portfolio:
-        initial_price = holding['price']
-        current_price = prices[holding['name']]
-        change = current_price - initial_price
-        nshares = holding['shares']
-        listing = holding['name']
-        report.append((listing, nshares, current_price, change))
-    
-    return report
+    Make a list of (name, shares, price, change) tuples given a portfolio list
+    and prices dictionary.
+    '''
+    rows = []
+    for stock in portfolio:
+        current_price = prices[stock['name']]
+        change = current_price - stock['price']
+        summary = (stock['name'], stock['shares'], current_price, change)
+        rows.append(summary)
+    return rows
 
 def print_report(report):
     ''' Prints a nicely formatted output of the report (list of tuples)
@@ -80,18 +57,16 @@ def portfolio_report(portfolio_filename, prices_filename):
     report = make_report(portfolio, prices)
     print_report(report)
 
-def main(argv):
+def main(args):
     '''
     Parse command line arguments
     '''
-    portfolio_file = argv[1]
-    price_file = argv[2]
-    portfolio_report(portfolio_file, price_file)
+    if len(args) != 3:
+        raise SystemExit(f'Usage: {args[0]} ' 'portfile pricefile')
+    portfolio_report(args[1], args[2])
 
 if __name__ == '__main__':
     import sys
-    if len(sys.argv) != 3:
-        raise SystemExit(f'Usage: {sys.argv[0]} ' 'portfile pricefile')
     try:
         main(sys.argv)
     except FileNotFoundError as e:
