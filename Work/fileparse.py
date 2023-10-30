@@ -3,11 +3,17 @@
 # Exercise 3.10
 
 import csv
+from collections.abc import Iterable
+from os import path
 
 def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', silence_errors=False):
     '''
     Parse a CSV file into a list of records with type conversion.
     '''
+    # Raise an Error if a filename is provided
+    if isinstance(lines, str):
+        raise RuntimeError('lines should be not be a filename')
+    
     if select and not has_headers:
         raise RuntimeError('select requires column headers')
     
