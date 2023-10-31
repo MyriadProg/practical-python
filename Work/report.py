@@ -5,6 +5,7 @@
 # imports
 import fileparse
 import stock
+import tableformat
 
 def read_portfolio(filename):
     '''
@@ -37,27 +38,31 @@ def make_report(portfolio, prices):
         rows.append(summary)
     return rows
 
-def print_report(report):
-    ''' Prints a nicely formatted output of the report (list of tuples)
+def print_report(report, formatter):
+    ''' Prints a nicely formatted table from a list of (name, shares, price, change)
     '''
-    headers = ('Name', 'Shares', 'Price', 'Change')
-    separator = '-'*10
-
-    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
-    print(f'{separator:>10s} {separator:>10s} {separator:>10s} {separator:>10s}')
+    formatter.headings(['Name', 'Shares', 'Price', 'Change'])
+    currency = lambda price: f"${price:0.2f}" # lambda function to add the $ currency symbol to the price
 
     for name, shares, price, change in report:
-        currency = lambda price: f"${price:0.2f}" # lambda function to add the $ currency symbol to the price
-        print(f'{name:>10s} {shares:>10d} {currency(price):>10s} {change:>10.2f}')
+        rowdata = [ name, str(shares), currency(price), f'{change:0.2f}' ]
+        formatter.row(rowdata)
 
 def portfolio_report(portfolio_filename, prices_filename):
     ''' 
-    Prints a portfolio report from the csv files portfolio_filename and prices_filename
+    Make a stock report given portfolio and price data files.
     '''
+
+    # Read data files
     portfolio = read_portfolio(portfolio_filename)
     prices = read_prices(prices_filename)
+
+    # Create the report data
     report = make_report(portfolio, prices)
-    print_report(report)
+
+    # Print it out
+    formatter = tableformat.HTMLTableFormatter()
+    print_report(report, formatter)
 
 def main(args):
     '''
