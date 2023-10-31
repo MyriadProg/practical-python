@@ -68,9 +68,12 @@ def main(args):
     '''
     Parse command line arguments
     '''
-    if len(args) != 3:
-        raise SystemExit(f'Usage: {args[0]} ' 'portfile pricefile')
-    portfolio_report(args[1], args[2])
+    if len(args) == 4:
+        portfolio_report(args[1], args[2], args[3])
+    elif len(args) == 3:
+        portfolio_report(args[1], args[2])
+    else:
+        raise SystemExit(f'Usage: {args[0]} ' 'portfile pricefile [fmt]')
 
 if __name__ == '__main__':
     import sys
