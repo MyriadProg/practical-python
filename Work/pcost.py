@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 2.16
+# Exercise 4.4
 
 # imports
 
@@ -14,7 +14,7 @@ def portfolio_cost(filename):
     portfolio = read_portfolio(filename)
 
     # Compute total cost
-    return sum([s['shares'] * s['price'] for s in portfolio])
+    return sum([s.shares * s.price for s in portfolio])
 
 def main(args):
     if len(args) != 2:
