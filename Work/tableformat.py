@@ -57,6 +57,9 @@ class HTMLTableFormatter(TableFormatter):
         print("</tr>")
 
 class FormatError(Exception):
+    '''
+    Custom FormatError class
+    '''
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
