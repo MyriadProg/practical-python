@@ -56,6 +56,10 @@ class HTMLTableFormatter(TableFormatter):
             print("<td>",d,"</td>", end='')
         print("</tr>")
 
+class FormatError(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
 def create_formatter(name):
     '''
     Selects the formatting class based on user input
@@ -67,7 +71,7 @@ def create_formatter(name):
     elif name == 'html':
         formatter = HTMLTableFormatter()
     else:
-        raise RuntimeError(f'Unknown format {name}')
+        raise FormatError('Unknown table format %s' % name)
     return formatter
     
 def print_table(portfolio, select, formatter = TextTableFormatter):
