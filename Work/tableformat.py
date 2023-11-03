@@ -57,6 +57,9 @@ class HTMLTableFormatter(TableFormatter):
         print("</tr>")
 
 def create_formatter(name):
+    '''
+    Selects the formatting class based on user input
+    '''
     if name == 'txt':
         formatter = TextTableFormatter()
     elif name == 'csv':
@@ -67,5 +70,16 @@ def create_formatter(name):
         raise RuntimeError(f'Unknown format {name}')
     return formatter
     
+def print_table(portfolio, select, formatter = TextTableFormatter):
+    '''
+    Prints a nicely formatted output of the portfolio
+    '''
+    # Define headers for formatter according to user input
+    formatter.headings(select)
 
+    # Select data from each stock object and format appropriately
+    for stock in portfolio:
+        stock_data = [str(getattr(stock, colname)) for colname in select]
+        formatter.row(stock_data)
+    
 
