@@ -14,7 +14,7 @@ def portfolio_cost(filename):
     portfolio = read_portfolio(filename)
 
     # Compute total cost
-    return sum([s.cost for s in portfolio])
+    return portfolio.total_cost
 
 def main(args):
     if len(args) != 2:
