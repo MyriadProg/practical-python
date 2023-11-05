@@ -4,6 +4,8 @@
 
 from follow import follow
 import csv
+import report
+import tableformat
 
 def select_columns(rows, indices):
     for row in rows:
@@ -29,10 +31,15 @@ def filter_symbols(rows, names):
         if row['name'] in names:
             yield row
 
-if __name__ == '__main__':
-    import report
-    portfolio = report.read_portfolio('Data/portfolio.csv')
-    rows = parse_stock_data(follow('Data/stocklog.csv'))
-    rows = filter_symbols(rows, portfolio)
+def ticker(portfile, logfile, fmt):
+    portfolio = report.read_portfolio(portfile)
+    logdata = parse_stock_data(follow(logfile))
+    rows = filter_symbols(logdata, portfolio)
+    formatter = tableformat.create_formatter(fmt)
+    formatter.headings(['name', 'price', 'change'])
     for row in rows:
-        print(row)
+        formatter.row( [row['name'], f"{row['price']:0.2f}", f"{row['change']:0.2f}"] )
+    
+
+if __name__ == '__main__':
+    pass
