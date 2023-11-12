@@ -67,8 +67,14 @@ def portfolio_report(portfolio_filename, prices_filename, fmt='txt'):
 
 def main(args):
     '''
-    Parse command line arguments
+    Parse command line arguments and logging
     '''
+    import logging
+    logging.basicConfig(
+        filename='app.log',        # Name of the log file (omit to use stderr)
+        filemode= 'w',             # File mode (use 'a' to append)
+        level = logging.WARNING    # Logging level (DEBUG, INFO, WARNING, ERROR, or CRITICAL)
+    )
     if len(args) == 4:
         portfolio_report(args[1], args[2], args[3])
     elif len(args) == 3:
