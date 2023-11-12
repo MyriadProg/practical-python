@@ -8,13 +8,13 @@ from stock import Stock
 from portfolio import Portfolio
 import tableformat
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     '''
     Read a stock portfolio file into a list of Stock instances with attributes
     name, shares, and price.
     '''
     with open(filename) as lines:
-        portfoliodicts = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+        portfoliodicts = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float], **opts)
         portfolio = [ Stock(**d) for d in portfoliodicts ]
         return Portfolio(portfolio)
     
